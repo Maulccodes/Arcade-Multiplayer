@@ -1,0 +1,26 @@
+/* Network statistics display styling */
+.network-stats {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-family: monospace;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+}
+
+.value.warning {
+  color: #ff9800;
+}
+
+/* Add transition for smooth updates */
+.stat-item span {
+  transition: color 0.3s;
+}

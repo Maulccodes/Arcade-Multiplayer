@@ -1,0 +1,33 @@
+.network-graphs {
+  padding: 20px;
+  background: #1a1a1a;
+  border-radius: 8px;
+}
+
+.metrics-container {
+  display: flex;
+  gap: 20px;
+}
+
+.metric {
+  flex: 1;
+}
+
+.metric h3 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.graph {
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.graph div {
+  flex: 1;
+  background: #4CAF50;
+  min-height: 1px;
+  transition: height 0.2s ease;
+}

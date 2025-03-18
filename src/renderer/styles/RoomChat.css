@@ -1,0 +1,167 @@
+.chat-input {
+  position: relative;
+}
+
+.input-container {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.emoji-button {
+  padding: 4px 8px;
+  font-size: 1.2em;
+  cursor: pointer;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.emoji-picker-container {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  z-index: 1000;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+}
+
+.message-content {
+  font-size: 1.1em;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.chat-message {
+  padding: 8px;
+  margin: 4px 0;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.chat-message.private {
+  background: #fff3e0;
+}
+
+.private-badge {
+  padding: 2px 6px;
+  background: #ff9800;
+  color: white;
+  border-radius: 12px;
+  font-size: 0.8em;
+  margin-left: 8px;
+}
+
+.message-reactions {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.reaction {
+  padding: 2px 6px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.reaction.active {
+  background: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.attachment {
+  margin-top: 8px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.file-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-upload-button {
+  padding: 4px 8px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+.room-state-manager {
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.player-list {
+  margin-bottom: 16px;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  background: white;
+  border-radius: 4px;
+  margin: 4px 0;
+}
+
+.host-badge {
+  background: #4caf50;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  margin-left: 8px;
+}
+
+.ready-status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.ready-status.ready {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.ready-status.not-ready {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.room-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.room-controls button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.room-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

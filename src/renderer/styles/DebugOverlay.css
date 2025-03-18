@@ -1,0 +1,182 @@
+.debug-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  color: #00ff00;
+  font-family: monospace;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+
+.debug-overlay.visible {
+  transform: translateY(0);
+}
+
+.debug-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.tab-buttons button {
+  background: transparent;
+  color: white;
+  border: 1px solid #666;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.tab-buttons button.active {
+  background: #00ff00;
+  color: black;
+}
+
+.debug-content {
+  padding: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.input-debug,
+.network-debug,
+.emulator-debug {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.input-visualizer {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+
+.network-graphs {
+  background: #111;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.emulator-debugger {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 16px;
+}
+
+.cpu-state {
+  background: #111;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.register {
+  font-family: monospace;
+  padding: 2px 4px;
+}
+
+.memory-viewer {
+  background: #111;
+  padding: 8px;
+  border-radius: 4px;
+  overflow: auto;
+}
+
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 2px;
+}
+
+.memory-cell {
+  font-family: monospace;
+  padding: 2px;
+  text-align: center;
+  background: #222;
+}
+
+.performance-profiler {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.warning {
+  color: #ff9800;
+}
+
+.advanced-debug-panel {
+  background: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.debug-tabs {
+  display: flex;
+  background: #2a2a2a;
+  padding: 8px;
+  gap: 4px;
+}
+
+.debug-tabs button {
+  padding: 6px 12px;
+  background: #333;
+  border: none;
+  color: #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.debug-tabs button.active {
+  background: #00ff00;
+  color: #000;
+}
+
+.memory-leak-item {
+  padding: 8px;
+  border-left: 3px solid #ff0000;
+  margin: 4px 0;
+  background: #222;
+}
+
+.frame-timeline {
+  height: 100px;
+  background: #222;
+  position: relative;
+}
+
+.packet-log {
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.state-diff {
+  padding: 8px;
+  border-left: 3px solid #0088ff;
+  margin: 4px 0;
+}
+
+.diff-path {
+  color: #888;
+  font-size: 0.9em;
+}
+
+.diff-value {
+  color: #00ff00;
+}
