@@ -1,36 +1,42 @@
-/**
- * Handles advanced audio effects processing
- */
-class AdvancedAudioEffects {
-  private context: AudioContext;
-  private effectsChain: AudioNode[] = [];
+export class AdvancedAudioEffects {
+  private audioContext: AudioContext;
+  private effects: Map<string, AudioNode>;
+  private impulseResponses: Map<string, AudioBuffer>;
 
   constructor() {
-    this.context = new AudioContext();
+    this.audioContext = new AudioContext();
+    this.effects = new Map();
+    this.impulseResponses = new Map();
     this.initializeEffects();
   }
 
-  /**
-   * Create advanced reverb effect
-   */
-  private createConvolutionReverb(): ConvolverNode {
-    const convolver = this.context.createConvolver();
-    this.loadImpulseResponse(convolver);
-    return convolver;
+  private initializeEffects(): void {
+    // Create basic effects
+    const reverb = this.audioContext.createConvolver();
+    const distortion = this.audioContext.createWaveShaper();
+    const delay = this.audioContext.createDelay(5.0);
+
+    this.effects.set('reverb', reverb);
+    this.effects.set('distortion', distortion);
+    this.effects.set('delay', delay);
   }
 
-  /**
-   * Create multi-band distortion
-   */
-  private createMultibandDistortion(): AudioNode[] {
-    const bands = [60, 200, 2000, 6000];
-    return bands.map(freq => {
-      const filter = this.context.createBiquadFilter();
-      const distortion = this.context.createWaveShaper();
-      filter.frequency.value = freq;
-      distortion.curve = this.createDistortionCurve(400);
-      filter.connect(distortion);
-      return distortion;
-    });
+  private async loadImpulseResponse(url: string): Promise<AudioBuffer> {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    return await this.audioContext.decodeAudioData(arrayBuffer);
+  }
+
+  private createDistortionCurve(amount: number): Float32Array {
+    const samples = 44100;
+    const curve = new Float32Array(samples);
+    const deg = Math.PI / 180;
+
+    for (let i = 0; i < samples; ++i) {
+      const x = (i * 2) / samples - 1;
+      curve[i] = ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
+    }
+
+    return curve;
   }
 }

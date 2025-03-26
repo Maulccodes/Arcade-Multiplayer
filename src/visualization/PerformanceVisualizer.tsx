@@ -1,12 +1,21 @@
+import { PerformanceMetrics } from '../performance/PerformanceMetrics';
+import { LineGraph, LatencyGraph, AreaGraph, Graph } from './graphs';
+
 class PerformanceVisualizer {
   private canvas: HTMLCanvasElement;
-  private metrics: PerformanceMetrics;
-  private graphs: Map<string, Graph>;
+  private metrics: PerformanceMetrics = {} as PerformanceMetrics;
+  private graphs: Map<string, Graph> = new Map();
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.setupGraphs();
     this.startVisualization();
+  }
+
+  // Add missing method
+  private startVisualization(): void {
+    // Implementation for starting visualization
+    requestAnimationFrame(() => this.render());
   }
 
   private setupGraphs(): void {
@@ -43,3 +52,5 @@ class PerformanceVisualizer {
     this.graphs.forEach(graph => graph.draw(ctx));
   }
 }
+
+export { PerformanceVisualizer };

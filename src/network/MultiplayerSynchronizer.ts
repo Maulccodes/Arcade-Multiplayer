@@ -62,38 +62,38 @@ class MultiplayerSynchronizer {
   /**
    * Handles multiplayer game state synchronization
    */
-  class MultiplayerSynchronizer {
-    private gameStates: Map<string, GameState> = new Map();
-    private inputBuffer: InputBuffer;
-    private rollbackManager: RollbackManager;
-  
-    constructor(private networkManager: NetworkManager) {
-      this.inputBuffer = new InputBuffer();
-      this.rollbackManager = new RollbackManager();
-      this.setupNetworkHandlers();
+  private gameStates: Map<string, GameState> = new Map();
+  private inputBuffer: InputBuffer;
+  private rollbackManager: RollbackManager;
+
+  constructor(private networkManager: NetworkManager) {
+    this.inputBuffer = new InputBuffer();
+    this.rollbackManager = new RollbackManager();
+    this.setupNetworkHandlers();
+  }
+
+  /**
+   * Process and synchronize remote player input
+   * @param input Remote player input data
+   */
+  handleRemoteInput(input: PlayerInput): void {
+    this.inputBuffer.addInput(input);
+    this.synchronizeStates();
+  }
+
+  /**
+   * Perform state synchronization between players
+   */
+  private synchronizeStates(): void {
+    const localState = this.gameStates.get('local');
+    const remoteState = this.gameStates.get('remote');
+    
+    if (this.needsRollback(localState, remoteState)) {
+      this.rollbackManager.performRollback();
     }
-  
-    /**
-     * Process and synchronize remote player input
-     * @param input Remote player input data
-     */
-    handleRemoteInput(input: PlayerInput): void {
-      this.inputBuffer.addInput(input);
-      this.synchronizeStates();
-    }
-  
-    /**
-     * Perform state synchronization between players
-     */
-    private synchronizeStates(): void {
-      const localState = this.gameStates.get('local');
-      const remoteState = this.gameStates.get('remote');
-      
-      if (this.needsRollback(localState, remoteState)) {
-        this.rollbackManager.performRollback();
-      }
-      
-      this.broadcastState(localState);
-    }
+    
+    this.broadcastState(localState);
   }
 }
+
+export { MultiplayerSynchronizer };

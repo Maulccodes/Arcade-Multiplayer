@@ -78,45 +78,45 @@ class NetworkOptimizer {
   /**
    * Advanced network optimization
    */
-  class NetworkOptimizer {
-    private packetQueue: PriorityQueue<NetworkPacket>;
-    private bandwidthMonitor: BandwidthMonitor;
+  private packetQueue: PriorityQueue<NetworkPacket>;
+  private bandwidthMonitor: BandwidthMonitor;
   
-    /**
-     * Initialize network optimizer
-     */
-    constructor() {
-      this.packetQueue = new PriorityQueue();
-      this.bandwidthMonitor = new BandwidthMonitor();
-      this.setupOptimization();
-    }
+  /**
+   * Initialize network optimizer
+   */
+  constructor() {
+    this.packetQueue = new PriorityQueue();
+    this.bandwidthMonitor = new BandwidthMonitor();
+    this.setupOptimization();
+  }
   
-    /**
-     * Optimize packet transmission
-     */
-    optimizePacket(packet: NetworkPacket): OptimizedPacket {
-      const compressed = this.compressPacketData(packet);
-      const priority = this.calculatePriority(packet);
-      
-      return {
-        ...compressed,
-        priority,
-        sendTime: this.calculateSendTime(priority)
-      };
-    }
+  /**
+   * Optimize packet transmission
+   */
+  optimizePacket(packet: NetworkPacket): OptimizedPacket {
+    const compressed = this.compressPacketData(packet);
+    const priority = this.calculatePriority(packet);
+    
+    return {
+      ...compressed,
+      priority,
+      sendTime: this.calculateSendTime(priority)
+    };
+  }
   
-    /**
-     * Handle congestion control
-     */
-    private handleCongestion(): void {
-      const bandwidth = this.bandwidthMonitor.getCurrentBandwidth();
-      const latency = this.bandwidthMonitor.getAverageLatency();
-      
-      if (bandwidth < this.thresholds.minBandwidth) {
-        this.reduceSendRate();
-      } else if (latency > this.thresholds.maxLatency) {
-        this.adjustPacketSize();
-      }
+  /**
+   * Handle congestion control
+   */
+  private handleCongestion(): void {
+    const bandwidth = this.bandwidthMonitor.getCurrentBandwidth();
+    const latency = this.bandwidthMonitor.getAverageLatency();
+    
+    if (bandwidth < this.thresholds.minBandwidth) {
+      this.reduceSendRate();
+    } else if (latency > this.thresholds.maxLatency) {
+      this.adjustPacketSize();
     }
   }
 }
+
+export { NetworkOptimizer };

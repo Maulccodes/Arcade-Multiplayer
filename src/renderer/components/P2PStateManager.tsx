@@ -7,6 +7,65 @@ interface P2PStateManagerProps {
   onError: (error: Error) => void;
 }
 
+// Add these interfaces at the top after imports
+interface RoomInfo {
+  id: string;
+  maxPlayers: number;
+  currentPlayers: number;
+  hasPassword: boolean;
+}
+
+interface ChatMessage {
+  sender: string;
+  content: string;
+  timestamp: number;
+}
+
+interface ChatComponentProps {
+  onSendMessage: (content: string) => void;
+}
+
+// Add this component
+const ChatComponent: React.FC<ChatComponentProps> = ({ onSendMessage }) => {
+  const [message, setMessage] = useState('');
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (message.trim()) {
+      onSendMessage(message);
+      setMessage('');
+    }
+  };
+  
+  return (
+    <form onSubmit={handleSubmit} className="chat-component">
+      <input
+        type="text"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Type a message..."
+      />
+      <button type="submit">Send</button>
+    </form>
+  );
+};
+
+// Also add the missing handleLeaveRoom and handleShareState functions
+const handleLeaveRoom = (roomId: string) => {
+  if (!connection) return;
+  connection.leaveRoom(roomId);
+  setActiveRooms(prev => prev.filter(room => room.id !== roomId));
+  if (selectedRoom === roomId) {
+    setSelectedRoom('');
+  }
+};
+
+const handleShareState = (roomId: string, slot: number) => {
+  if (!connection || !emulator) return;
+  const state = emulator.getState(slot);
+  connection.shareGameState(roomId, state, slot);
+};
+
 const P2PStateManager: React.FC<P2PStateManagerProps> = ({ emulator, onError }) => {
   const [connection, setConnection] = useState<P2PConnectionManager | null>(null);
   const [activeRooms, setActiveRooms] = useState<RoomInfo[]>([]);
@@ -30,6 +89,16 @@ const P2PStateManager: React.FC<P2PStateManagerProps> = ({ emulator, onError }) 
       });
     });
 
+    setConnection(p2p);
+    return () => p2p.removeAllListeners();
+  }, [emulator]);
+
+  // Remove the duplicate useEffect block that appears later:
+  // setConnection(p2p);
+  // return () => p2p.removeAllListeners();
+  // }, [emulator]);
+
+  const handleCreateRoom = async () => {
     if (!connection) return;
     try {
       const roomInfo = await connection.createRoom(maxPlayers, roomPassword);
@@ -53,10 +122,6 @@ const P2PStateManager: React.FC<P2PStateManagerProps> = ({ emulator, onError }) 
       onError(error as Error);
     }
   };
-
-  setConnection(p2p);
-    return () => p2p.removeAllListeners();
-  }, [emulator]);
 
   const handleSendMessage = async (roomId: string, content: string) => {
     if (!connection) return;
@@ -125,21 +190,21 @@ const P2PStateManager: React.FC<P2PStateManagerProps> = ({ emulator, onError }) 
               </button>
               <button onClick={() => handleLeaveRoom(room.id)}>Leave</button>
               {selectedRoom === room.id && (
-                <div className="state-sharing">
-                  {[1, 2, 3, 4].map(slot => (
-                    <button 
-                      key={slot}
-                      onClick={() => handleShareState(room.id, slot)}
-                    >
-                      Share State {slot}
-                    </button>
-                  ))}
+                <div>
+                  <div className="state-sharing">
+                    {[1, 2, 3, 4].map(slot => (
+                      <button 
+                        key={slot}
+                        onClick={() => handleShareState(room.id, slot)}
+                      >
+                        Share State {slot}
+                      </button>
+                    ))}
+                  </div>
+                  <ChatComponent
+                    onSendMessage={(content) => handleSendMessage(room.id, content)}
+                  />
                 </div>
-                <RoomChat
-                  roomId={room.id}
-                  messages={messages.get(room.id) || []}
-                  onSendMessage={(content) => handleSendMessage(room.id, content)}
-                />
               )}
             </div>
           </div>

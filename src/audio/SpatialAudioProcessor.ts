@@ -1,47 +1,27 @@
-/**
- * Handles spatial audio processing and positioning
- */
-class SpatialAudioProcessor {
-  private audioContext: AudioContext;
-  private listener: AudioListener;
-  private sources: Map<string, AudioSource> = new Map();
+import { AudioSource, Vector3 } from './types';
 
-  /**
-   * Initialize spatial audio processor
-   */
+export class SpatialAudioProcessor {
+  private context: AudioContext;
+  private sources: Map<string, AudioSource>;
+
   constructor() {
-    this.audioContext = new AudioContext();
-    this.listener = this.audioContext.listener;
+    this.context = new AudioContext();
+    this.sources = new Map();
     this.setupAudioEnvironment();
   }
 
-  /**
-   * Create a positioned audio source
-   */
-  createPositionalSource(id: string, position: Vector3): AudioSource {
-    const panner = this.audioContext.createPanner();
-    panner.panningModel = 'HRTF';
-    panner.distanceModel = 'inverse';
-    panner.refDistance = 1;
-    panner.maxDistance = 10000;
-    panner.rolloffFactor = 1;
-    
-    const source = { panner, position };
-    this.sources.set(id, source);
-    return source;
+  private setupAudioEnvironment(): void {
+    // Set up spatial audio environment
   }
 
-  /**
-   * Update listener position and orientation
-   */
-  updateListenerPosition(position: Vector3, orientation: Vector3): void {
-    this.listener.positionX.setValueAtTime(position.x, this.audioContext.currentTime);
-    this.listener.positionY.setValueAtTime(position.y, this.audioContext.currentTime);
-    this.listener.positionZ.setValueAtTime(position.z, this.audioContext.currentTime);
-    
-    // Update orientation vectors
-    this.listener.forwardX.setValueAtTime(orientation.x, this.audioContext.currentTime);
-    this.listener.forwardY.setValueAtTime(orientation.y, this.audioContext.currentTime);
-    this.listener.forwardZ.setValueAtTime(orientation.z, this.audioContext.currentTime);
+  updateSourcePosition(sourceId: string, position: Vector3): void {
+    const source = this.sources.get(sourceId);
+    if (source) {
+      source.position = position;
+    }
+  }
+
+  addAudioSource(source: AudioSource): void {
+    this.sources.set(source.id, source);
   }
 }

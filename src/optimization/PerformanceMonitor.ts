@@ -1,52 +1,63 @@
-/**
- * Enhanced performance monitoring system
- */
-class PerformanceMonitor {
+import { PerformanceMetrics } from '../performance/PerformanceMetrics';
+
+export class PerformanceMonitor {
   private metrics: PerformanceMetrics = {
-    fps: [],
-    memory: [],
-    network: [],
-    cpu: []
+    fps: 0,
+    frameTime: 0,
+    memoryUsage: 0,
+    networkLatency: 0,
+    cpuUsage: 0
   };
+  
+  private lastFrameTime: number = 0;
+  private frameCount: number = 0;
+  private fpsUpdateInterval: number = 1000; // 1 second
+  private lastFpsUpdate: number = 0;
 
-  /**
-   * Start performance monitoring
-   */
-  startMonitoring(): void {
-    this.monitorFrameRate();
-    this.monitorMemoryUsage();
-    this.monitorNetworkPerformance();
-    this.monitorCPUUsage();
+  constructor() {
+    this.startMonitoring();
   }
 
-  /**
-   * Monitor CPU performance
-   */
-  private monitorCPUUsage(): void {
-    const taskManager = new TaskManager();
+  private startMonitoring(): void {
+    this.lastFrameTime = performance.now();
+    this.lastFpsUpdate = this.lastFrameTime;
+    requestAnimationFrame(() => this.update());
+  }
+
+  private update(): void {
+    const now = performance.now();
+    const deltaTime = now - this.lastFrameTime;
+    this.lastFrameTime = now;
     
-    setInterval(() => {
-      const usage = taskManager.getCPUUsage();
-      this.metrics.cpu.push({
-        timestamp: Date.now(),
-        usage,
-        tasks: taskManager.getActiveTasks()
-      });
-      
-      this.optimizeCPUUsage(usage);
-    }, 1000);
+    // Update frame time
+    this.metrics.frameTime = deltaTime;
+    
+    // Update FPS counter
+    this.frameCount++;
+    if (now - this.lastFpsUpdate >= this.fpsUpdateInterval) {
+      this.metrics.fps = Math.round((this.frameCount * 1000) / (now - this.lastFpsUpdate));
+      this.frameCount = 0;
+      this.lastFpsUpdate = now;
+    }
+    
+    // Update memory usage if available
+    if (performance.memory) {
+      this.metrics.memoryUsage = (performance.memory as any).usedJSHeapSize / (1024 * 1024);
+    }
+    
+    // Continue monitoring
+    requestAnimationFrame(() => this.update());
   }
 
-  /**
-   * Generate performance report
-   */
-  generateReport(): PerformanceReport {
-    return {
-      averageFPS: this.calculateAverageFPS(),
-      memoryTrend: this.analyzeMemoryTrend(),
-      networkHealth: this.assessNetworkHealth(),
-      cpuUtilization: this.analyzeCPUUtilization(),
-      recommendations: this.generateOptimizationRecommendations()
-    };
+  getMetrics(): PerformanceMetrics {
+    return { ...this.metrics };
+  }
+
+  setNetworkLatency(latency: number): void {
+    this.metrics.networkLatency = latency;
+  }
+
+  setCpuUsage(usage: number): void {
+    this.metrics.cpuUsage = usage;
   }
 }

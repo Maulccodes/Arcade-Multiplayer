@@ -18,3 +18,22 @@ export interface MatchTimer {
   pause(): void;
   reset(): void;
 }
+
+export interface GameEngine {
+  start(): void;
+  stop(): void;
+  update(delta: number): void;
+}
+
+export interface MockEmulator {
+  loadROM(data: Uint8Array): void;
+  processInput(input: any): void;
+}
+
+export function getMockROMData(): Uint8Array {
+  return new Uint8Array([/* mock data */]);
+}
+
+export function getMockInput(): any {
+  return {/* mock input data */};
+}

@@ -3,54 +3,18 @@
   "productName": "arcade-multiplayer",
   "version": "1.0.0",
   "description": "My Electron application description",
-  "main": "src/index.js",
+  "main": "main.js",
   "scripts": {
-    "start": "webpack serve --mode development --open",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\"",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "build": "webpack --mode production",
-    "dev": "webpack serve --mode development --hot --open",
-    "build": "webpack --mode production",
-    "start": "node dist/server.js",
-    "test": "jest"
-  },
-  "keywords": [],
-  "author": {
-    "name": "Your Name",
-    "email": "your.email@example.com"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "electron-squirrel-startup": "^1.0.1",
-    "emoji-picker-react": "^4.12.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "build": "tsc",
+    "start": "electron .",
+    "dev": "tsc && electron .",
+    "watch": "tsc -w"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.7.0",
-    "@electron-forge/maker-deb": "^7.7.0",
-    "@electron-forge/maker-rpm": "^7.7.0",
-    "@electron-forge/maker-squirrel": "^7.7.0",
-    "@electron-forge/maker-zip": "^7.7.0",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.7.0",
-    "@electron-forge/plugin-fuses": "^7.7.0",
-    "@electron/fuses": "^1.8.0",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.13.10",
-    "@types/react": "^19.0.11",
-    "electron": "35.0.2",
-    "html-webpack-plugin": "^5.6.3",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.2.6",
-    "ts-loader": "^9.5.2",
-    "ts-node": "^10.9.2",
-    "webpack": "^5.98.0",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.0"
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "electron": "^35.0.3",
+    "typescript": "^5.8.2"
   }
 }

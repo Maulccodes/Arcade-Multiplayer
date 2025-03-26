@@ -1,19 +1,31 @@
 export interface UIState {
   isVisible: boolean;
-  opacity: number;
-  position: { x: number; y: number };
+  isActive: boolean;
 }
 
 export interface AnimationConfig {
   duration: number;
   easing: string;
-  delay?: number;
 }
 
 export interface AnimationSequence {
   steps: AnimationConfig[];
-  loop?: boolean;
   onComplete?: () => void;
+}
+
+export interface GameOverlay {
+  render(): JSX.Element;
+  update(state: any): void;
+}
+
+export interface PlayerStats {
+  score: number;
+  health: number;
+}
+
+export interface MatchTimer {
+  current: number;
+  total: number;
 }
 
 export interface TransitionManager {

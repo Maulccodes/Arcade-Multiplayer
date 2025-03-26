@@ -1,40 +1,63 @@
-import { GameEngine } from '../types/engine';
+import { EmulatorService } from '../emulator/EmulatorService';
 
-// Change the export to make it available
-export class GameEngine implements GameEngine {
+export class GameEngine {
+  private emulator: EmulatorService;
   private isRunning: boolean = false;
-  private resources: Map<string, any> = new Map();
   private lastFrameTime: number = 0;
-
-  start(): void {
-    if (!this.isRunning) {
-      this.isRunning = true;
-      this.lastFrameTime = performance.now();
-      requestAnimationFrame(this.gameLoop.bind(this));
+  private frameRate: number = 60;
+  private frameInterval: number = 1000 / 60; // 60 FPS by default
+  
+  constructor(emulator: EmulatorService) {
+    this.emulator = emulator;
+  }
+  
+  async loadGame(romData: Uint8Array): Promise<boolean> {
+    try {
+      return await this.emulator.loadROM(romData);
+    } catch (error) {
+      console.error('Failed to load ROM:', error);
+      return false;
     }
   }
-
+  
+  start(): void {
+    if (this.isRunning) return;
+    
+    this.isRunning = true;
+    this.lastFrameTime = performance.now();
+    this.gameLoop();
+  }
+  
   stop(): void {
     this.isRunning = false;
   }
-
-  updateFrame(deltaTime: number): void {
-    if (this.isRunning) {
-      // Game update logic here
-    }
+  
+  setFrameRate(fps: number): void {
+    this.frameRate = fps;
+    this.frameInterval = 1000 / fps;
   }
-
-  getResources(): any {
-    return Object.fromEntries(this.resources);
+  
+  processInput(input: any): void {
+    // Process input logic would go here
+    // This would typically map user input to emulator controls
   }
-
-  private gameLoop(timestamp: number): void {
+  
+  update(): void {
+    // Update game state
+    // This would be called each frame to advance the game state
+  }
+  
+  private gameLoop(): void {
     if (!this.isRunning) return;
-
-    const deltaTime = timestamp - this.lastFrameTime;
-    this.lastFrameTime = timestamp;
-
-    this.updateFrame(deltaTime);
-    requestAnimationFrame(this.gameLoop.bind(this));
+    
+    const now = performance.now();
+    const deltaTime = now - this.lastFrameTime;
+    
+    if (deltaTime >= this.frameInterval) {
+      this.lastFrameTime = now - (deltaTime % this.frameInterval);
+      this.update();
+    }
+    
+    requestAnimationFrame(() => this.gameLoop());
   }
 }

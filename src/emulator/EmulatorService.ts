@@ -342,3 +342,13 @@ class EmulatorService {
 }
 
 export default EmulatorService;
+
+
+export interface EmulatorService {
+  loadROM(data: Uint8Array): Promise<boolean>;
+  start(): void;
+  pause(): void;
+  reset(): void;
+  getState(slot: number): Uint8Array;
+  setState(data: Uint8Array, slot: number): boolean;
+}

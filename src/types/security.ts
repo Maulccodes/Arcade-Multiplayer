@@ -1,14 +1,10 @@
 export interface AttackSimulationResult {
   vulnerabilities: string[];
-  riskLevel: 'low' | 'medium' | 'high';
-  details: string;
-  timestamp: number;
+  severity: 'low' | 'medium' | 'high' | 'critical';
 }
 
 export interface SecurityRecommendation {
-  id: string;
-  description: string;
-  priority: number;
+  risk: string;
   mitigation: string;
 }
 
@@ -18,8 +14,13 @@ export interface ThreatDetector {
 }
 
 export interface IntegrityValidator {
-  validateState(state: any): boolean;
-  checksum(data: any): string;
+  validate(): boolean;
+  checkSignature(data: any): boolean;
+}
+
+export interface ThreatDetector {
+  analyze(): boolean;
+  getThreats(): string[];
 }
 
 export interface SecurityMonitor {
